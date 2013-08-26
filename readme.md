@@ -1,5 +1,5 @@
-#H1 HAFIZBOT
-#H3 Sufi Poetry Emailer
+# HAFIZBOT
+### Sufi Poetry Emailer
 
 HAFIZBOT is a brief Python script that locates poems within a collection of poetry and emails them out simply.
 It was designed to work with "Poems from the Divan of Hafiz", a late 19th century translation of the 14th C. Sufi poet.
