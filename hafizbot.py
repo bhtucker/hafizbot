@@ -52,16 +52,31 @@ MIME-Version: 1.0
 Content-type: text/html
 Subject: HAFIZBOT
 
-
 """
 
 logfile = open("hafizlog.txt",'r+')
+logfile.seek(0)
 logint = int(logfile.readline().split(",")[0])
+loglines = logfile.readlines()
+
+#check log to make sure HAFIZBOT didn't already run today
+splitLL = loglines[len(loglines)-1].split(",")
+monstr = splitLL[2].strip()
+daystr = splitLL[3].strip()
+if monstr == "tm_mon=" + str(time.localtime()[1]):
+	if daystr == "tm_mday=" + str(time.localtime()[2]):
+		logfile.seek(0,2)
+		logfile.write("attempt # " + str(logint) + " aborted at, " + str(time.localtime()) + ", \r\n")
+		logfile.close
+		sys.exit()
+		
+#if this isn't a dup run, update the log and proceed
 logfile.seek(0)
 logfile.write(str(logint+1) + ", \r\n")
 logfile.seek(0,2)
-logfile.write("run # " + str(logint) + " at " + str(time.localtime()) + ", \r\n")
+logfile.write("run # " + str(logint) + " at, " + str(time.localtime()) + ", \r\n")
 logfile.close
+
 
 for i in range(len(msgdict[logint])):
 	if i == 0:
@@ -82,8 +97,8 @@ server.ehlo()
 server.starttls()
 server.ehlo()
 server.login('bensontucker@gmail.com',benson.gmail())
-#server.sendmail('bensontucker@gmail.com',["adamfoldi@gmail.com","ronaldkevinlewis@gmail.com","william_mack-crane@brown.edu","bensontucker@gmail.com","tnassau@gmail.com","lizzie_davis@brown.edu","r.j.sandler@gmail.com","serena.putterman@gmail.com","heyredhat@gmail.com","colin.ocon@gmail.com"],msg)
+server.sendmail('bensontucker@gmail.com',["sophia_renda@brown.edu","jonathan_storch@brown.edu","adamfoldi@gmail.com","ronaldkevinlewis@gmail.com","william_mack-crane@brown.edu","bensontucker@gmail.com","tnassau@gmail.com","lizzie_davis@brown.edu","r.j.sandler@gmail.com","serena.putterman@gmail.com","heyredhat@gmail.com","colin.ocon@gmail.com","tcleslie@bsu.edu"],msg)
 
-server.sendmail('bensontucker@gmail.com','bensontucker@gmail.com',msg)
+#server.sendmail('bensontucker@gmail.com','bensontucker@gmail.com',msg)
 
 server.close()
